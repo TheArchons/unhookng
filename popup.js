@@ -1,29 +1,26 @@
 const toggles = [
   'hideHomeFeed',
+  'redirectToSubscriptions',
   'hideVideoSidebar',
   'hideRecommended',
   'hideLiveChat',
   'hidePlaylist',
   'hideFundraiser',
-  'hideEndScreenFeed',
   'hideEndScreenCards',
   'hideShorts',
   'hideComments',
   'hideProfilePhotos',
   'hideMixes',
-  'hideMerchTickets',
+  'hideMerch',
   'hideVideoInfo',
   'hideButtonsBar',
   'hideChannel',
   'hideDescription',
   'hideTopHeader',
   'hideNotifications',
-  'hideInaptSearch',
-  'hideExploreTrending',
+  'hideExplore',
   'hideMoreFromYT',
-  'hideSubscriptions',
-  'disableAutoplay',
-  'disableAnnotations'
+  'hideSubscriptions'
 ];
 
 // Load saved settings

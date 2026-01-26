@@ -2,6 +2,15 @@
 let styleElement = null;
 
 function applyStyles(settings) {
+  // Redirect homepage to subscriptions
+  if (settings.redirectToSubscriptions) {
+    const path = window.location.pathname;
+    if (path === '/' || path === '/feed/trending') {
+      window.location.replace('https://www.youtube.com/feed/subscriptions');
+      return;
+    }
+  }
+
   if (!styleElement) {
     styleElement = document.createElement('style');
     styleElement.id = 'unhook-styles';
@@ -10,13 +19,39 @@ function applyStyles(settings) {
 
   const rules = [];
   
-  if (settings.hideVideoSidebar) rules.push('#secondary { display: none !important; }')
+  if (settings.hideHomeFeed) rules.push('ytd-rich-grid-renderer { display: none !important; }');
+  if (settings.hideVideoSidebar) rules.push('#secondary { display: none !important; }');
   if (settings.hideRecommended) rules.push('#related { display: none !important; }');
   if (settings.hideLiveChat) rules.push('#chat-container { display: none !important; }');
   if (settings.hidePlaylist) rules.push('#playlist { display: none !important; }');
   if (settings.hideFundraiser) rules.push('#donation-shelf { display: none !important; }');
   
-  
+  if (settings.hideEndScreenCards) rules.push('.ytp-fullscreen-grid, .ytp-ce-element { display: none !important; }');
+  if (settings.hideShorts) rules.push('a#endpoint[title="Shorts"], ytd-shorts, grid-shelf-view-model, ytd-rich-shelf-renderer { display: none !important; }')
+
+  if (settings.hideComments) rules.push('.ytd-comments { display: none !important; }');
+  if (settings.hideProfilePhotos) rules.push('#author-thumbnail { display: none !important; }');
+
+  if (settings.hideMixes) rules.push('yt-lockup-view-model:has(a[href*="list=RDMM"]), ytd-playlist-renderer:has(a[href*="list=RDMM"]) { display: none !important; }');
+  if (settings.hideMerch) rules.push('ytd-merch-shelf-renderer { display: none !important; }');
+
+  if (settings.hideVideoInfo) rules.push('ytd-watch-metadata { display: none !important; }');
+  if (settings.hideButtonsBar) rules.push('#actions { display: none !important; }');
+  if (settings.hideChannel) rules.push('#owner { display: none !important; }');
+  if (settings.hideDescription) rules.push('#description { display: none !important; }');
+
+  if (settings.hideTopHeader) rules.push('#masthead-container { display: none !important; }');
+  if (settings.hideNotifications) rules.push('ytd-notification-topbar-button-renderer { display: none !important; }');
+
+  // there is no unique id for the explore section but "Music" is inside of this section so we can find only sections with music
+  if (settings.hideExplore) rules.push('ytd-guide-section-renderer:has(a[title="Music"]) { display: none !important; }');
+
+  // same as hideExplore but instead we find only sections with YouTube Premium
+  if (settings.hideMoreFromYT) rules.push('ytd-guide-section-renderer:has(a[title="YouTube Premium"]) { display: none !important; }');
+
+  // same as hideExplore but instead we only find sections with Subscriptions
+  if (settings.hideSubscriptions) rules.push('ytd-guide-section-renderer:has(a[title="Subscriptions"]) { display: none !important; }');
+
   styleElement.textContent = rules.join('\n');
 }
 
@@ -30,5 +65,9 @@ main();
 
 // Listen for storage changes and reapply all settings
 browser.storage.onChanged.addListener(() => {
+  main();
+});
+
+document.body.addEventListener("yt-navigate-start", function(event) {
   main();
 });
