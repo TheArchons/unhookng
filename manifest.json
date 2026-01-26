@@ -6,7 +6,7 @@
   "description": "Hide YouTube related videos, shorts, comments, suggestions wall, homepage recommendations, trending, and other distractions.",
 
   "icons": {
-    "48": "icons/unhook.png"
+    "32": "icons/unhook.png"
   },
 
   "permissions": [
