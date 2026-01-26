@@ -1,0 +1,36 @@
+{
+  "manifest_version": 2,
+  "name": "Unhook NG",
+  "version": "1",
+
+  "description": "New version of Unhook. Block Youtube Distractions.",
+
+  "icons": {
+    "48": "icons/unhook.jpg"
+  },
+
+  "permissions": [
+    "storage"
+  ],
+
+  "browser_action": {
+    "default_icon": "icons/unhook.jpg",
+    "default_title": "Unhook NG",
+    "default_popup": "popup.html"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["*://*.youtube.com/*"],
+      "js": ["unhook.js"]
+    }
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "@unhookng",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    }
+  }
+}
