@@ -25,9 +25,6 @@
       "js": ["unhook.js"]
     }
   ],
-  "host_permissions": [
-    "*://*.youtube.com/*"
-  ],
   "browser_specific_settings": {
     "gecko": {
       "id": "@unhookng",
