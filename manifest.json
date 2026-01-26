@@ -1,7 +1,7 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Unhook NG",
-  "version": "1",
+  "version": "1.1",
 
   "description": "Hide YouTube related videos, shorts, comments, suggestions wall, homepage recommendations, trending, and other distractions.",
 
@@ -13,7 +13,7 @@
     "storage"
   ],
 
-  "browser_action": {
+  "action": {
     "default_icon": "icons/unhook.png",
     "default_title": "Unhook NG",
     "default_popup": "popup.html"
@@ -24,6 +24,9 @@
       "matches": ["*://*.youtube.com/*"],
       "js": ["unhook.js"]
     }
+  ],
+  "host_permissions": [
+    "*://*.youtube.com/*"
   ],
   "browser_specific_settings": {
     "gecko": {
