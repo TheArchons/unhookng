@@ -1,3 +1,6 @@
+// Chrome/Firefox compatibility
+const browserAPI = globalThis.browser || globalThis.chrome;
+
 // Single stylesheet for all hiding rules
 let styleElement = null;
 
@@ -56,7 +59,8 @@ function applyStyles(settings) {
 }
 
 async function main() {
-  const settings = await browser.storage.local.get(null);
+  // Chrome/Firefox compatibility
+  const settings = await browserAPI.storage.local.get(null);
   applyStyles(settings);
 }
 
@@ -64,7 +68,7 @@ async function main() {
 main();
 
 // Listen for storage changes and reapply all settings
-browser.storage.onChanged.addListener(() => {
+browserAPI.storage.onChanged.addListener(() => {
   main();
 });
 

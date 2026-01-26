@@ -1,3 +1,5 @@
+const browserAPI = globalThis.browser || globalThis.chrome;
+
 const toggles = [
   'hideHomeFeed',
   'redirectToSubscriptions',
@@ -24,11 +26,11 @@ const toggles = [
 ];
 
 // Load saved settings
-browser.storage.local.get(toggles).then((result) => {
+browserAPI.storage.local.get(toggles).then((result) => {
   toggles.forEach((id) => {
     const checkbox = document.getElementById(id);
     if (checkbox) {
-      checkbox.checked = result[id] !== false;
+      checkbox.checked = result[id] === true;
     }
   });
 });
@@ -41,5 +43,5 @@ document.addEventListener('change', (e) => {
   const checked = e.target.checked;
   const settings = { [id]: checked };
 
-  browser.storage.local.set(settings);
+  browserAPI.storage.local.set(settings);
 });
