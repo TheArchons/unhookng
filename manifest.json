@@ -3,10 +3,10 @@
   "name": "Unhook NG",
   "version": "1",
 
-  "description": "New version of Unhook. Block Youtube Distractions.",
+  "description": "Hide YouTube related videos, shorts, comments, suggestions wall, homepage recommendations, trending, and other distractions.",
 
   "icons": {
-    "48": "icons/unhook.jpg"
+    "48": "icons/unhook.png"
   },
 
   "permissions": [
@@ -14,7 +14,7 @@
   ],
 
   "browser_action": {
-    "default_icon": "icons/unhook.jpg",
+    "default_icon": "icons/unhook.png",
     "default_title": "Unhook NG",
     "default_popup": "popup.html"
   },
