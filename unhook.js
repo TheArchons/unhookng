@@ -57,7 +57,7 @@ function applyStyles(settings) {
   if (settings.hideSubscriptions) {
     // the not is because sometimes youtube puts subscriptions in a section with all the other links, so we don't want to hide that but instead we want to rely on the second rule
     rules.push('ytd-guide-section-renderer:has(a#endpoint[title="Subscriptions"]):not(:has(a#endpoint[title="Home"])) { display: none !important; }');
-    rules.push('a#endpoint[title="Subscriptions"], ytd-shorts, grid-shelf-view-model, ytd-rich-shelf-renderer { display: none !important; }');
+    rules.push('a#endpoint[title="Subscriptions"] { display: none !important; }');
     if (path == '/feed/subscriptions') {
       rules.push('ytd-rich-grid-renderer { display: none !important; }');
     }
