@@ -23,7 +23,7 @@ function applyStyles(settings) {
 
   const rules = [];
   
-  if (settings.hideHomeFeed && path == '/') rules.push('ytd-rich-grid-renderer { display: none !important; }');
+  if (settings.hideHomeFeed && path === '/') rules.push('ytd-rich-grid-renderer { display: none !important; }');
   if (settings.hideVideoSidebar) rules.push('#secondary { display: none !important; }');
   if (settings.hideRecommended) rules.push('#related { display: none !important; }');
   if (settings.hideLiveChat) rules.push('#chat-container { display: none !important; }');
