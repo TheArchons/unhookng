@@ -5,9 +5,10 @@ const browserAPI = globalThis.browser || globalThis.chrome;
 let styleElement = null;
 
 function applyStyles(settings) {
+  const path = window.location.pathname;
+
   // Redirect homepage to subscriptions
   if (settings.redirectToSubscriptions) {
-    const path = window.location.pathname;
     if (path === '/' || path === '/feed/trending') {
       window.location.replace('https://www.youtube.com/feed/subscriptions');
       return;
@@ -22,7 +23,7 @@ function applyStyles(settings) {
 
   const rules = [];
   
-  if (settings.hideHomeFeed) rules.push('ytd-rich-grid-renderer { display: none !important; }');
+  if (settings.hideHomeFeed && path == '/') rules.push('ytd-rich-grid-renderer { display: none !important; }');
   if (settings.hideVideoSidebar) rules.push('#secondary { display: none !important; }');
   if (settings.hideRecommended) rules.push('#related { display: none !important; }');
   if (settings.hideLiveChat) rules.push('#chat-container { display: none !important; }');
@@ -53,7 +54,14 @@ function applyStyles(settings) {
   if (settings.hideMoreFromYT) rules.push('ytd-guide-section-renderer:has(a[title="YouTube Premium"]) { display: none !important; }');
 
   // same as hideExplore but instead we only find sections with Subscriptions
-  if (settings.hideSubscriptions) rules.push('ytd-guide-section-renderer:has(a[title="Subscriptions"]) { display: none !important; }');
+  if (settings.hideSubscriptions) {
+    // the not is because sometimes youtube puts subscriptions in a section with all the other links, so we don't want to hide that but instead we want to rely on the second rule
+    rules.push('ytd-guide-section-renderer:has(a#endpoint[title="Subscriptions"]):not(:has(a#endpoint[title="Home"])) { display: none !important; }');
+    rules.push('a#endpoint[title="Subscriptions"], ytd-shorts, grid-shelf-view-model, ytd-rich-shelf-renderer { display: none !important; }');
+    if (path == '/feed/subscriptions') {
+      rules.push('ytd-rich-grid-renderer { display: none !important; }');
+    }
+  }
 
   styleElement.textContent = rules.join('\n');
 }
