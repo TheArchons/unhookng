@@ -40,3 +40,6 @@ The ZIP file is also available in the [Releases](https://github.com/TheArchons/u
 ## Screenshots
 
 ![Screenshot of the Unhook Extension](https://github.com/TheArchons/unhookng/blob/main/screenshots/s2.png)
+
+
+![Screenshot of the Unhook Extension](https://github.com/TheArchons/unhookng/blob/main/screenshots/s3.png)
