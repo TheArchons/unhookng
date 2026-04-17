@@ -21,7 +21,7 @@
 
   "content_scripts": [
     {
-      "matches": ["*://*.youtube.com/*"],
+      "matches": ["*://www.youtube.com/*"],
       "js": ["unhook.js"]
     }
   ],
