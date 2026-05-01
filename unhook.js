@@ -38,6 +38,7 @@ function applyStyles(settings) {
 
   if (settings.hideMixes) rules.push('yt-lockup-view-model:has(a[href*="list=RDMM"]), ytd-playlist-renderer:has(a[href*="list=RDMM"]) { display: none !important; }');
   if (settings.hideMerch) rules.push('ytd-merch-shelf-renderer { display: none !important; }');
+  if (settings.hideEventTickets) rules.push('ytd-ticket-shelf-renderer { display: none !important; }');
 
   if (settings.hideVideoInfo) rules.push('ytd-watch-metadata { display: none !important; }');
   if (settings.hideButtonsBar) rules.push('#actions { display: none !important; }');

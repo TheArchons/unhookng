@@ -14,6 +14,7 @@ const toggles = [
   'hideProfilePhotos',
   'hideMixes',
   'hideMerch',
+  'hideEventTickets',
   'hideVideoInfo',
   'hideButtonsBar',
   'hideChannel',

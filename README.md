@@ -27,6 +27,7 @@ The ZIP file is also available in the [Releases](https://github.com/TheArchons/u
 - Hide Profile Photos
 - Hide Mixes
 - Hide Merch
+- Hide Event Tickets
 - Hide Video Info
 - Hide Buttons Bar
 - Hide Channel
