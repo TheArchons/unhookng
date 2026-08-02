@@ -10,13 +10,19 @@
   },
 
   "permissions": [
-    "storage"
+    "storage",
+    "webRequest",
+    "webRequestBlocking"
   ],
 
   "action": {
     "default_icon": "icons/unhook.png",
     "default_title": "Unhook NG",
     "default_popup": "popup.html"
+  },
+
+  "background": {
+    "scripts": ["background.js"]
   },
 
   "content_scripts": [
