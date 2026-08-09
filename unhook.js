@@ -1,8 +1,10 @@
 // Chrome/Firefox compatibility
 const browserAPI = globalThis.browser || globalThis.chrome;
+const shortsHardMode = globalThis.UnhookShortsHardMode;
 
 // Single stylesheet for all hiding rules
 let styleElement = null;
+let shortsRestoreTimer = null;
 
 function applyStyles(settings) {
   const path = window.location.pathname;
@@ -31,7 +33,9 @@ function applyStyles(settings) {
   if (settings.hideFundraiser) rules.push('#donation-shelf { display: none !important; }');
   
   if (settings.hideEndScreenCards) rules.push('.ytp-fullscreen-grid, .ytp-ce-element { display: none !important; }');
-  if (settings.hideShorts) rules.push('a#endpoint[title="Shorts"], ytd-shorts, grid-shelf-view-model, ytd-rich-shelf-renderer { display: none !important; }')
+  if (shortsHardMode.shouldHideShorts(settings)) {
+    rules.push('a#endpoint[title="Shorts"], a[href^="/shorts/"], ytd-shorts, grid-shelf-view-model, ytd-rich-shelf-renderer, ytm-pivot-bar-item-renderer:has(.pivot-shorts), ytm-reel-shelf-renderer, ytm-shorts-lockup-view-model { display: none !important; }');
+  }
 
   if (settings.hideComments) rules.push('.ytd-comments { display: none !important; }');
   if (settings.hideProfilePhotos) rules.push('#author-thumbnail { display: none !important; }');
@@ -70,7 +74,25 @@ function applyStyles(settings) {
 async function main() {
   // Chrome/Firefox compatibility
   const settings = await browserAPI.storage.local.get(null);
+
+  if (shortsHardMode.shouldRestoreShortsBlock(settings)) {
+    settings.hideShorts = true;
+    delete settings[shortsHardMode.REENABLE_UNTIL_KEY];
+    await browserAPI.storage.local.set({ hideShorts: true });
+    await browserAPI.storage.local.remove(shortsHardMode.REENABLE_UNTIL_KEY);
+  }
+
   applyStyles(settings);
+
+  if (shortsRestoreTimer !== null) {
+    clearTimeout(shortsRestoreTimer);
+    shortsRestoreTimer = null;
+  }
+
+  const restoreDelay = shortsHardMode.restoreTimerDelay(settings);
+  if (restoreDelay !== null) {
+    shortsRestoreTimer = setTimeout(main, restoreDelay);
+  }
 }
 
 // Content scripts run after DOM is ready by default, so call main directly

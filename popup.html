@@ -2,9 +2,10 @@
 <html>
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
-      width: 240px;
+      width: 280px;
       padding: 12px;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       font-size: 13px;
@@ -39,6 +40,110 @@
     input[type="checkbox"] {
       margin-right: 8px;
       accent-color: #ff4444;
+    }
+
+    .status {
+      margin: 0 0 4px 28px;
+      color: #aaa;
+      font-size: 11px;
+    }
+
+    dialog {
+      box-sizing: border-box;
+      width: min(280px, calc(100vw - 24px));
+      max-height: calc(100vh - 24px);
+      overflow-y: auto;
+      padding: 16px;
+      border: 1px solid #555;
+      border-radius: 8px;
+      background: #242424;
+      color: #fff;
+    }
+
+    dialog::backdrop {
+      background: rgba(0, 0, 0, 0.75);
+    }
+
+    dialog h2 {
+      margin: 0 0 4px;
+      font-size: 16px;
+    }
+
+    dialog p {
+      margin: 0 0 12px;
+      color: #bbb;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .duration-options {
+      display: grid;
+      gap: 7px;
+    }
+
+    button,
+    input[type="number"],
+    select {
+      box-sizing: border-box;
+      min-height: 36px;
+      border: 1px solid #555;
+      border-radius: 5px;
+      background: #333;
+      color: #fff;
+      font: inherit;
+    }
+
+    button {
+      padding: 8px 10px;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    button:hover,
+    button:focus-visible {
+      border-color: #ff4444;
+      background: #3d3d3d;
+    }
+
+    .cancel-button {
+      margin-top: 12px;
+      width: 100%;
+      border-color: transparent;
+      background: transparent;
+      color: #bbb;
+      text-align: center;
+    }
+
+    .custom-options {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #444;
+    }
+
+    .custom-duration {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px;
+      margin-bottom: 7px;
+    }
+
+    .custom-duration input,
+    .custom-duration select,
+    .custom-options > button {
+      width: 100%;
+      padding: 7px;
+    }
+
+    .permanent-option {
+      margin-top: 32px;
+      padding-top: 14px;
+      border-top: 1px solid #444;
+    }
+
+    .permanent-option button {
+      width: 100%;
+      border-color: #7a3333;
+      color: #ffb3b3;
     }
   </style>
 </head>
@@ -84,6 +189,11 @@
     <input type="checkbox" id="hideShorts">
     Hide Shorts
   </label>
+    <label class="sub">
+      <input type="checkbox" id="shortsHardMode">
+      Hard Mode (timed access)
+    </label>
+    <p id="shortsStatus" class="status" aria-live="polite" hidden></p>
 
   <label>
     <input type="checkbox" id="hideComments">
@@ -150,6 +260,40 @@
     Hide Subscriptions
   </label>
 
+  <dialog id="shortsDurationDialog">
+    <form method="dialog">
+      <h2>Enable Shorts for...</h2>
+      <p>Hard Mode will hide Shorts again when the selected time ends.</p>
+      <div class="duration-options">
+        <button type="button" data-duration-minutes="5">5 minutes</button>
+        <button type="button" data-duration-minutes="15">15 minutes</button>
+        <button type="button" data-duration-minutes="30">30 minutes</button>
+        <button type="button" data-duration-minutes="60">1 hour</button>
+        <button type="button" id="showCustomOptions">Custom...</button>
+      </div>
+
+      <div id="customOptions" class="custom-options" hidden>
+        <div class="custom-duration">
+          <input type="number" id="customDuration" min="1" step="1" value="2" aria-label="Custom duration">
+          <select id="customDurationUnit" aria-label="Custom duration unit">
+            <option value="minutes">minutes</option>
+            <option value="hours" selected>hours</option>
+            <option value="days">days</option>
+          </select>
+        </div>
+        <button type="button" id="enableShortsCustom">Enable for custom duration</button>
+
+        <div class="permanent-option">
+          <p>This removes the time limit. Hard Mode will ask again only after Shorts are hidden.</p>
+          <button type="button" id="enableShortsPermanently">Enable permanently</button>
+        </div>
+      </div>
+
+      <button class="cancel-button" value="cancel">Keep Shorts hidden</button>
+    </form>
+  </dialog>
+
+  <script src="hard-mode.js"></script>
   <script src="popup.js"></script>
 </body>
 </html>

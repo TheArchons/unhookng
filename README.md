@@ -23,6 +23,7 @@ The ZIP file is also available in the [Releases](https://github.com/TheArchons/u
 - Hide Fundraiser
 - Hide End Screen Cards
 - Hide Shorts
+  - Hard Mode with preset or custom timed access
 - Hide Comments
 - Hide Profile Photos
 - Hide Mixes
@@ -44,3 +45,10 @@ The ZIP file is also available in the [Releases](https://github.com/TheArchons/u
 
 
 ![Screenshot of the Unhook Extension](https://github.com/TheArchons/unhookng/blob/main/screenshots/s3.png)
+
+## Development
+
+- `scripts/test.sh` checks the Hard Mode timing and content-script behavior.
+- `scripts/test-popup-edge.sh` exercises the picker in a mobile-sized Microsoft Edge viewport.
+- `scripts/package-crx.sh` builds a CRX for Microsoft Edge testing.
+- `scripts/edge-android-test.sh` prepares and captures evidence from an ADB-connected Android device.

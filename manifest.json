@@ -21,8 +21,8 @@
 
   "content_scripts": [
     {
-      "matches": ["*://www.youtube.com/*"],
-      "js": ["unhook.js"]
+      "matches": ["*://www.youtube.com/*", "*://m.youtube.com/*"],
+      "js": ["hard-mode.js", "unhook.js"]
     }
   ],
   "browser_specific_settings": {
