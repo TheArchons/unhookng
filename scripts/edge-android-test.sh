@@ -102,13 +102,44 @@ if [[ "$initial_keyguard_state" == "locked" ]]; then
       exit 1
     fi
 
-    {
-      echo 'input keyevent KEYCODE_MOVE_END'
-      for _ in {1..16}; do echo 'input keyevent KEYCODE_DEL'; done
-      printf 'input text %s\n' "$pin_digits"
-      echo 'input keyevent KEYCODE_ENTER'
-      echo 'exit'
-    } | "$ADB_BIN" -s "$DEVICE" shell >/dev/null
+    if ! command -v python3 >/dev/null; then
+      echo "python3 is required to safely locate the Android PIN keypad" >&2
+      exit 1
+    fi
+
+    tap_commands="$(PIN_DIGITS="$pin_digits" python3 -c '
+import os
+import re
+import sys
+import xml.etree.ElementTree as ET
+
+root = ET.fromstring(sys.stdin.read())
+coordinates = {}
+for node in root.iter("node"):
+    resource_id = node.attrib.get("resource-id", "").rsplit("/", 1)[-1]
+    if resource_id not in {"delete_button", "key_enter", *(f"key{i}" for i in range(10))}:
+        continue
+    numbers = [int(value) for value in re.findall(r"\d+", node.attrib.get("bounds", ""))]
+    if len(numbers) == 4:
+        coordinates[resource_id] = ((numbers[0] + numbers[2]) // 2,
+                                    (numbers[1] + numbers[3]) // 2)
+
+required = [f"key{digit}" for digit in os.environ["PIN_DIGITS"]] + ["key_enter"]
+missing = [key for key in required if key not in coordinates]
+if missing:
+    raise SystemExit("verified PIN keypad is missing required controls")
+
+if "delete_button" in coordinates:
+    x, y = coordinates["delete_button"]
+    for _ in range(16):
+        print(f"input tap {x} {y}")
+for digit in os.environ["PIN_DIGITS"]:
+    x, y = coordinates[f"key{digit}"]
+    print(f"input tap {x} {y}")
+x, y = coordinates["key_enter"]
+print(f"input tap {x} {y}")
+' <<<"$unlock_ui")"
+    printf '%s\n' "$tap_commands" | "$ADB_BIN" -s "$DEVICE" shell >/dev/null
     sleep 3
   fi
 

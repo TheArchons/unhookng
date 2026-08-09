@@ -54,6 +54,7 @@ async function main() {
   await vm.runInContext('main()', context);
 
   assert.equal(styleElement.textContent.includes('a[href^="/shorts/"]'), true);
+  assert.equal(styleElement.textContent.includes('ytm-pivot-bar-item-renderer:has(.pivot-shorts)'), true);
   assert.equal(storage.hideShorts, true);
   assert.equal('shortsReenableUntil' in storage, false);
   console.log('Content script Hard Mode tests passed');

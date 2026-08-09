@@ -34,7 +34,7 @@ function applyStyles(settings) {
   
   if (settings.hideEndScreenCards) rules.push('.ytp-fullscreen-grid, .ytp-ce-element { display: none !important; }');
   if (shortsHardMode.shouldHideShorts(settings)) {
-    rules.push('a#endpoint[title="Shorts"], a[href^="/shorts/"], ytd-shorts, grid-shelf-view-model, ytd-rich-shelf-renderer, ytm-reel-shelf-renderer, ytm-shorts-lockup-view-model { display: none !important; }');
+    rules.push('a#endpoint[title="Shorts"], a[href^="/shorts/"], ytd-shorts, grid-shelf-view-model, ytd-rich-shelf-renderer, ytm-pivot-bar-item-renderer:has(.pivot-shorts), ytm-reel-shelf-renderer, ytm-shorts-lockup-view-model { display: none !important; }');
   }
 
   if (settings.hideComments) rules.push('.ytd-comments { display: none !important; }');

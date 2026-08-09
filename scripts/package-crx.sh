@@ -4,6 +4,7 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 EDGE_BIN="${EDGE_BIN:-/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge}"
 OUTPUT_PATH="${1:-$ROOT_DIR/build/unhookng.crx}"
+KEY_PATH="${CRX_KEY_PATH:-$ROOT_DIR/build/unhookng.pem}"
 PACKAGE_DIR="$(mktemp -d)"
 
 cleanup() {
@@ -21,7 +22,15 @@ cp "$ROOT_DIR"/{manifest.json,popup.html,popup.js,hard-mode.js,unhook.js,LICENSE
   "$PACKAGE_DIR/extension/"
 cp -R "$ROOT_DIR/icons" "$PACKAGE_DIR/extension/icons"
 
-"$EDGE_BIN" --pack-extension="$PACKAGE_DIR/extension" --no-message-box
+if [[ -f "$KEY_PATH" ]]; then
+  "$EDGE_BIN" --pack-extension="$PACKAGE_DIR/extension" \
+    --pack-extension-key="$KEY_PATH" --no-message-box
+else
+  mkdir -p "$(dirname "$KEY_PATH")"
+  "$EDGE_BIN" --pack-extension="$PACKAGE_DIR/extension" --no-message-box
+  mv "$PACKAGE_DIR/extension.pem" "$KEY_PATH"
+  chmod 600 "$KEY_PATH"
+fi
 mv "$PACKAGE_DIR/extension.crx" "$OUTPUT_PATH"
 
 echo "$OUTPUT_PATH"
